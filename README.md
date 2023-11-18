@@ -19,9 +19,9 @@ There will be a loop in which the user will be prompted to decide what type of s
 Overall I am learning and using Eclipse IDE. Previously I was trying to use as many topics as possible to increase my understanding and retention. Moving forward, I will be trying to keep the topics down to only what seems best for the program.
 
 I will be pulling from the following languages.
-Java 1.8
-MySQL
-Maven
+- Java 1.8
+- MySQL
+- Maven
 
 # Current Progress
 Initialized classes
