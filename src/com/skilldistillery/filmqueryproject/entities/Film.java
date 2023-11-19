@@ -131,6 +131,17 @@ public class Film {
 	public void setActors(List<Actor> actors) {
 		this.actors = actors;
 	}
+	
+	public String getActorNames() {
+		StringBuilder builder = new StringBuilder();
+		for (Actor actor : actors) {
+			builder.append(actor.getFirstName());
+			builder.append(" ");
+			builder.append(actor.getLastName());
+			builder.append("\n");
+		}
+		return builder.toString();
+	}
 
 	@Override
 	public int hashCode() {

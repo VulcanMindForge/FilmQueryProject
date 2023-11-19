@@ -105,7 +105,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				int actorId = rs.getInt("id");
 				String firstName = rs.getString("first_name");
 				String lastName = rs.getString("last_name");
-				
+
 				Actor actor = new Actor(firstName, lastName);
 				actor.setId(actorId);
 				actors.add(actor);
@@ -155,6 +155,45 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		return films;
 	}
 
+	@Override
+	public List<Film> findFilmByKeyWord(String keyWord) {
+		List<Film> films = new ArrayList<>();
+		keyWord = "%" + keyWord + "%"; 
+		try {
+			Connection conn = DriverManager.getConnection(URL, dBUserName, dBPassword);
+			String sqlTxt = "SELECT * FROM film WHERE title LIKE ? OR description LIKE ?";
+			PreparedStatement pstmt = conn.prepareStatement(sqlTxt);
+			pstmt.setString(1, keyWord);
+			pstmt.setString(2, keyWord);
+			ResultSet filmResult = pstmt.executeQuery();
+			Film film = null;
+
+			while (filmResult.next()) {
+				film = new Film();
+				film.setFilmId(filmResult.getInt("id"));
+				film.setTitle(filmResult.getString("title"));
+				film.setDesc(filmResult.getString("description"));
+				film.setReleaseYear(filmResult.getShort("release_year"));
+				film.setLangId(filmResult.getInt("language_id"));
+				film.setRentDur(filmResult.getInt("rental_duration"));
+				film.setRate(filmResult.getDouble("rental_rate"));
+				film.setLength(filmResult.getInt("length"));
+				film.setRepCost(filmResult.getDouble("replacement_cost"));
+				film.setRating(filmResult.getString("rating"));
+				film.setFeatures(stringToSet(filmResult.getString("special_features")));
+				film.setActors(findActorsByFilmId(filmResult.getInt("id")));
+				films.add(film);
+			}
+
+			filmResult.close();
+			pstmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return films;
+	}
+
 	public Set<String> stringToSet(String stringToSplit) {
 		Set<String> postSplitString = new HashSet<>();
 		String[] splitString = stringToSplit.split(",");
@@ -162,5 +201,29 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			postSplitString.add(splitString[i]);
 		}
 		return postSplitString;
+	}
+	
+	@Override
+	public String findLanguageByID(int languageID) {
+		String languageName = null;
+		String sqlTxt = "SELECT * FROM language WHERE id = ?";
+
+		try {
+			Connection conn = DriverManager.getConnection(URL, dBUserName, dBPassword);
+			PreparedStatement pstmt = conn.prepareStatement(sqlTxt);
+			pstmt.setInt(1, languageID);
+			ResultSet languageResult = pstmt.executeQuery();
+
+			if (languageResult.next()) {
+				languageName = languageResult.getString("name");
+			}
+			conn.close();
+			pstmt.close();
+			languageResult.close();
+			return languageName;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return languageName;
+		}
 	}
 }
