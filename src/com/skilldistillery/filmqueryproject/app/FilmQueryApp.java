@@ -61,8 +61,7 @@ public class FilmQueryApp {
 			System.out.println(displayFilmPartial(db.findFilmById(filmID)));
 			if (displayFullPrompt()) {
 				System.out.println(displayFilmFull(db.findFilmById(filmID)));
-				while (!returnToMainPrompt()) {
-				}
+				ui.holdForInput();
 			}
 			System.out.println("Returning to Main Menu.");
 			mainMenu();
@@ -113,16 +112,13 @@ public class FilmQueryApp {
 	}
 
 	private boolean returnToMainPrompt() {
-		boolean backToMain = false;
 		System.out.println("Would you like to return to the main menu?");
-		if (ui.userYesNo()) {
-			backToMain = true;
-		}
-		return backToMain;
+		return ui.userYesNo();
 	}
 
 	public void quit() {
 		isQuit = true;
+		ui.tearDown();
 	}
 
 	// ---------------------- Display Methods --------------------------------//
@@ -135,7 +131,9 @@ public class FilmQueryApp {
 
 	public String displayFilmPartial(Film film) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("\nFilm " + film.getFilmId() + " found:\n");
+		builder.append("\nFilm ");
+		builder.append(film.getFilmId());
+		builder.append(" found:\n");
 		if (film.getTitle() != null) {
 			builder.append("Title: ");
 			builder.append(film.getTitle());

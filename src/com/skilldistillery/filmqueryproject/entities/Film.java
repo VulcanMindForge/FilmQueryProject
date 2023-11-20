@@ -5,18 +5,18 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Film {
-	int filmId;
-	String title;
-	String desc;
-	short releaseYear;
-	int langId;
-	int rentDur;
-	double rate;
-	int length;
-	double repCost;
-	String rating;
-	Set<String> features;
-	List<Actor> actors;
+	private int filmId;
+	private String title;
+	private String desc;
+	private short releaseYear;
+	private int langId;
+	private int rentDur;
+	private double rate;
+	private int length;
+	private double repCost;
+	private String rating;
+	private Set<String> features;
+	private List<Actor> actors;
 
 	public Film() {
 	}

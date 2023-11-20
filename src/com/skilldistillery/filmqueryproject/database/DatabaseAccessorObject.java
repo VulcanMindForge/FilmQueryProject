@@ -64,34 +64,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	}
 
 	@Override
-	public Actor findActorById(int actorId) {
-		Actor actor = null;
-		String sqlTxt = "SELECT * FROM actor WHERE id = ?";
-
-		try {
-			Connection conn = DriverManager.getConnection(URL, dBUserName, dBPassword);
-			PreparedStatement pstmt = conn.prepareStatement(sqlTxt);
-			pstmt.setInt(1, actorId);
-			ResultSet actorResult = pstmt.executeQuery();
-
-			if (actorResult.next()) {
-				actor = new Actor();
-				actor.setId(actorResult.getInt("id"));
-				actor.setFirstName(actorResult.getString("first_name"));
-				actor.setLastName(actorResult.getString("last_name"));
-				actor.setFilms(findFilmsByActorId(actorId));
-			}
-			conn.close();
-			pstmt.close();
-			actorResult.close();
-			return actor;
-		} catch (SQLException e) {
-			System.err.println(e.getMessage());
-			return actor;
-		}
-	}
-
-	@Override
 	public List<Actor> findActorsByFilmId(int filmId) {
 		List<Actor> actors = new ArrayList<>();
 		try {

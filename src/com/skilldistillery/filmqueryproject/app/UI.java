@@ -6,9 +6,13 @@ import java.util.Scanner;
 import java.util.function.Function;
 
 public class UI {
-	private final String onInvalidMessage = "Invalid input.";
-	private final Scanner sc = new Scanner(System.in);
+	private final String onInvalidMessage;
+	private final Scanner sc; 
+	
+	
 	public UI() {
+		this.onInvalidMessage = "Invalid input.";
+		this.sc = new Scanner(System.in);
 	}
 
 	public Boolean userYesNo() {
@@ -51,7 +55,12 @@ public class UI {
 	public String getUserString() {
 		return getUserString("");
 	}
-
+	
+	public void holdForInput() {
+		System.out.println("Press Enter to continue.");
+		getUserString();
+	}
+	
 	private <T> T checkUserInput(String message, Function<String, T> parseMethod, Function<T, Boolean> isValidChecker) {
 		while (true) {
 			try {
@@ -70,5 +79,9 @@ public class UI {
 				System.err.println(onInvalidMessage);
 			}
 		}
+	}
+
+	public void tearDown() {
+		sc.close();
 	}
 }
